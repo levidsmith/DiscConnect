@@ -7,6 +7,8 @@ public class Cell : MonoBehaviour {
     public Disc disc;
     public int iRow;
     public int iCol;
+    public Board board;
+
     void Start() {
         disc = null;
         
@@ -17,6 +19,6 @@ public class Cell : MonoBehaviour {
     }
 
     public void updatePosition() {
-        transform.position = new Vector3(iCol, iRow, 0f);
+        transform.position = new Vector3(iCol + board.getXOffset(), iRow + board.getYOffset(), 0f);
     }
 }

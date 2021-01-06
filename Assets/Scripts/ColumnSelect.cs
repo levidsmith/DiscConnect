@@ -9,13 +9,23 @@ public class ColumnSelect : MonoBehaviour {
     public int iCol;
     public Board board;
     public GameManager gamemanager;
+    public GameObject model;
+    bool isHovered;
     
 
     void Start() {
+        isHovered = false;
         
     }
 
     void Update() {
+        /*
+        if (isHovered) {
+            model.SetActive(true);
+        } else {
+            model.SetActive(false);
+        }
+        */
         
     }
 
@@ -30,7 +40,18 @@ public class ColumnSelect : MonoBehaviour {
 
     public void updatePosition() {
         int iMaxRows = board.getRows();
-        transform.position = new Vector3(iCol, iMaxRows, 0f);
+        //        transform.position = new Vector3(iCol, iMaxRows, 0f);
+        transform.position = new Vector3(iCol + board.getXOffset(), iMaxRows + board.getYOffset(), 0f);
 
+    }
+
+    public void setHovered(bool b, Material mat) {
+        if (b) {
+            model.GetComponent<Renderer>().material = mat;
+            model.SetActive(true);
+            isHovered = b;
+        } else {
+            model.SetActive(false);
+        }
     }
 }

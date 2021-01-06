@@ -32,13 +32,14 @@ public class GameManager : MonoBehaviour {
 
         board = Instantiate(BoardPrefab, Vector3.zero, Quaternion.identity).GetComponent<Board>();
         board.gamemanager = this;
-        board.setupBoard(6, 7, 4);
+        //        board.setupBoard(6, 7, 4);
+        board.setupBoard(Options.ROWS, Options.COLS, Options.TO_WIN);
 
         players = new List<Player>();
         Player player;
         Vector3 pos;
 
-        pos = new Vector3(-2f, 0f, 0f);
+        pos = new Vector3(board.getXOffset() - 0.5f - 1f, 0f, 0f);
         player = Instantiate(PlayerPrefab, pos, Quaternion.identity).GetComponent<Player>();
         player.strName = "Player One";
         player.gamemanager = this;
@@ -47,7 +48,7 @@ public class GameManager : MonoBehaviour {
         player.setupPlayer();
         players.Add(player);
 
-        pos = new Vector3(9f, 0f, 0f);
+        pos = new Vector3(board.getXOffset() - 0.5f + board.getCols() + 1f, 0f, 0f);
         player = Instantiate(PlayerPrefab, pos, Quaternion.identity).GetComponent<Player>();
         player.strName = "Player Two";
         player.gamemanager = this;
@@ -82,17 +83,23 @@ public class GameManager : MonoBehaviour {
             if (currentPlayer.discs.Count > 0) {
                 targetCell.disc = currentPlayer.discs[iDisc];
                 targetCell.disc.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
-                targetCell.disc.transform.position = new Vector3(iCol, board.getRows(), 0f);
+                //                targetCell.disc.transform.position = new Vector3(iCol, board.getRows(), 0f);
+                targetCell.disc.transform.position = new Vector3(iCol + board.getXOffset(), board.getRows() + board.getYOffset(), 0f);
                 currentPlayer.discs.RemoveAt(iDisc);
                 targetCell.disc.targetPosition = targetCell.transform.position;
 
                 //Player playerWin = board.checkWinner(targetCell);
                 Player playerWin = board.checkWinner();
+                bool isDraw = board.checkDraw();
                 if (playerWin != null) {
                     Debug.Log(playerWin.strName + " Wins!");
                     isGameOver = true;
-                } else {
-                    nextPlayer();
+                } else if (isDraw) {
+                    Debug.Log("Draw!");
+                    isGameOver = true;
+
+                } else { 
+                nextPlayer();
                 }
             }
         }

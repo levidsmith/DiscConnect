@@ -30,18 +30,27 @@ public class Player : MonoBehaviour {
 
     private void handleInput() {
         //handle input through the OnMouseDown of ColumnSelect
-        if (Input.GetMouseButtonDown(0)) {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        //        if (Input.GetMouseButtonDown(0)) {
+        gamemanager.board.unhoverAll();
+
+
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit raycasthit;
 
             Physics.Raycast(ray, out raycasthit);
             if (raycasthit.collider != null) {
                 ColumnSelect columnselect = raycasthit.collider.GetComponent<ColumnSelect>();
                 if (columnselect != null) {
-                    gamemanager.playColumn(columnselect.iCol);
+                    if (Input.GetMouseButtonDown(0)) {
+                        gamemanager.playColumn(columnselect.iCol);
+                    } else {
+                        columnselect.setHovered(true, gamemanager.matDiscs[iPlayerIndex]);
+                    }
+
+
                 }
             }
-        }
+//        }
 
     }
 
@@ -84,7 +93,8 @@ public class Player : MonoBehaviour {
     }
 
     public void setupPlayer() {
-        int iDiscCount = 21;
+        //int iDiscCount = 21;
+        int iDiscCount = (Options.ROWS * Options.COLS) / 2;
         int i;
 
 

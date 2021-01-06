@@ -30,6 +30,7 @@ public class Board : MonoBehaviour {
                 Cell cell = Instantiate(CellPrefab, Vector3.zero, Quaternion.identity).GetComponent<Cell>();
                 cell.iRow = i;
                 cell.iCol = j;
+                cell.board = this;
                 cell.updatePosition();
                 cell.transform.SetParent(transform);
                 cells.Add(cell);
@@ -311,5 +312,34 @@ public class Board : MonoBehaviour {
         return iCount;
     }
 
+    public bool checkDraw() {
+        bool isDraw;
+
+        isDraw = true;
+        foreach (Cell cell in cells) {
+            if (cell.disc == null) {
+                isDraw = false;
+            }
+        }
+
+        return isDraw;
+    }
+
+
+    public float getXOffset() {
+        float fXOffset = (-1f * Options.COLS / 2f) + 0.5f;
+        return fXOffset;
+    }
+
+    public float getYOffset() {
+        return 0.5f;
+    }
+
+    public void unhoverAll() {
+        ColumnSelect[] css = GetComponentsInChildren<ColumnSelect>();
+        foreach (ColumnSelect cs in css) {
+            cs.setHovered(false, null);
+        }
+    }
 
 }
