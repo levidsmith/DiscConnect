@@ -46,8 +46,41 @@ public class Player : MonoBehaviour {
     }
 
     private void handleInputAI() {
-        int iRandCol = Random.Range(0, gamemanager.board.getCols() + 1);
-        gamemanager.playColumn(iRandCol);
+        //int iRandCol = Random.Range(0, gamemanager.board.getCols() + 1);
+        //gamemanager.playColumn(iRandCol);
+        int i;
+        string strWeights = "";
+        List<int> listWeights = gamemanager.board.getColumnOutcomeWeights(this);
+        int iBestValue = -1;
+        i = 0;
+        foreach (int iValue in listWeights) {
+            //            strWeights += i + ": " + iValue + ", ";
+            strWeights += iValue + ", ";
+            if (iValue > iBestValue) {
+                iBestValue = iValue;
+            }
+            i++;
+        }
+        Debug.Log("Weights: " + strWeights);
+
+        List<int> listBestColumns = new List<int>();
+
+        for (i = 0; i < listWeights.Count; i++) {
+            if (listWeights[i] == iBestValue) {
+                listBestColumns.Add(i);
+            }
+
+        }
+
+        string strColumns = "Columns: ";
+        foreach (int iValue in listBestColumns) {
+            strColumns += iValue + ", ";
+        }
+        Debug.Log("Best Columns: " + strColumns);
+
+        int iPlayColumn = listBestColumns[Random.Range(0, listBestColumns.Count)];
+        gamemanager.playColumn(iPlayColumn);
+
     }
 
     public void setupPlayer() {

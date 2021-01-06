@@ -30,7 +30,7 @@ public class ColumnSelect : MonoBehaviour {
 
     public void updatePosition() {
         int iMaxRows = board.getRows();
-        transform.position = new Vector3(iCol, iMaxRows + 1f, 0f);
+        transform.position = new Vector3(iCol, iMaxRows, 0f);
 
     }
 }

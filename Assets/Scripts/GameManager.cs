@@ -82,11 +82,12 @@ public class GameManager : MonoBehaviour {
             if (currentPlayer.discs.Count > 0) {
                 targetCell.disc = currentPlayer.discs[iDisc];
                 targetCell.disc.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
-                targetCell.disc.transform.position = new Vector3(iCol, board.getRows() + 1, 0f);
+                targetCell.disc.transform.position = new Vector3(iCol, board.getRows(), 0f);
                 currentPlayer.discs.RemoveAt(iDisc);
                 targetCell.disc.targetPosition = targetCell.transform.position;
 
-                Player playerWin = board.checkWinner(targetCell);
+                //Player playerWin = board.checkWinner(targetCell);
+                Player playerWin = board.checkWinner();
                 if (playerWin != null) {
                     Debug.Log(playerWin.strName + " Wins!");
                     isGameOver = true;
@@ -109,6 +110,9 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    public Player getIdlePlayer() {
+        return players[(players.IndexOf(currentPlayer) + 1) % 2];
+    }
 
 
 

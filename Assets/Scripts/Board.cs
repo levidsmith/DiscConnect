@@ -70,7 +70,7 @@ public class Board : MonoBehaviour {
         }
 
 
-        return iMaxRows;
+        return iMaxRows + 1;
     }
 
     public int getCols() {
@@ -82,7 +82,7 @@ public class Board : MonoBehaviour {
             }
         }
 
-        return iMaxCols;
+        return iMaxCols + 1;
 
     }
 
@@ -90,7 +90,7 @@ public class Board : MonoBehaviour {
         Cell cellReturn = null;
         int i;
 
-        i = getRows();
+        i = getRows() - 1;
 //        Debug.Log("i: " + i);
         while ((cellReturn == null) && (i >= 0)) {
 //            Debug.Log("Checking: " + i + ", " + iCol);
@@ -141,67 +141,66 @@ public class Board : MonoBehaviour {
     }
 
 
-    public Player checkWinner(Cell cell) {
+    public Player checkWinner() {
         Player playerWin = null;
 
-        if (cell.disc != null) {
-            //left to right
-            if (checkWinnerSequence(cell, 0, 1)) {
-                playerWin = cell.disc.player;
-                highlightSequence(cell, 0, 1);
+        foreach (Cell cell in cells) {
+            if (cell.disc != null && cell.disc.player == gamemanager.currentPlayer) {
+                //left to right
+                if (checkWinnerSequence(cell, 0, 1, gamemanager.currentPlayer)) {
+                    playerWin = cell.disc.player;
+                    highlightSequence(cell, 0, 1);
+                }
+
+                //right to left
+                if (checkWinnerSequence(cell, 0, -1, gamemanager.currentPlayer)) {
+                    playerWin = cell.disc.player;
+                    highlightSequence(cell, 0, -1);
+                }
+
+                //down to up
+                if (checkWinnerSequence(cell, 1, 0, gamemanager.currentPlayer)) {
+                    playerWin = cell.disc.player;
+                    highlightSequence(cell, 1, 0);
+                }
+
+                //up to down
+                if (checkWinnerSequence(cell, -1, 0, gamemanager.currentPlayer)) {
+                    playerWin = cell.disc.player;
+                    highlightSequence(cell, -1, 0);
+                }
+
+                //diagonals
+                if (checkWinnerSequence(cell, -1, -1, gamemanager.currentPlayer)) {
+                    playerWin = cell.disc.player;
+                    highlightSequence(cell, -1, -1);
+                }
+
+                if (checkWinnerSequence(cell, -1, 1, gamemanager.currentPlayer)) {
+                    playerWin = cell.disc.player;
+                    highlightSequence(cell, -1, 1);
+                }
+
+                if (checkWinnerSequence(cell, 1, -1, gamemanager.currentPlayer)) {
+                    playerWin = cell.disc.player;
+                    highlightSequence(cell, 1, -1);
+                }
+
+                if (checkWinnerSequence(cell, 1, 1, gamemanager.currentPlayer)) {
+                    playerWin = cell.disc.player;
+                    highlightSequence(cell, 1, 1);
+                }
+
+
+
             }
-
-            //right to left
-            if (checkWinnerSequence(cell, 0, -1)) {
-                playerWin = cell.disc.player;
-                highlightSequence(cell, 0, -1);
-            }
-
-            //this case won't ever happen in a standard game
-            //down to up
-            /*
-            if (checkWinnerSequence(cell, 1, 0)) {
-                playerWin = cell.disc.player;
-                highlightSequence(cell, 1, 0);
-            }
-            */
-
-            //up to down
-            if (checkWinnerSequence(cell, -1, 0)) {
-                playerWin = cell.disc.player;
-                highlightSequence(cell, -1, 0);
-            }
-
-            //diagonals
-            if (checkWinnerSequence(cell, -1, -1)) {
-                playerWin = cell.disc.player;
-                highlightSequence(cell, -1, -1);
-            }
-
-            if (checkWinnerSequence(cell, -1, 1)) {
-                playerWin = cell.disc.player;
-                highlightSequence(cell, -1, 1);
-            }
-
-            if (checkWinnerSequence(cell, 1, -1)) {
-                playerWin = cell.disc.player;
-                highlightSequence(cell, 1, -1);
-            }
-
-            if (checkWinnerSequence(cell, 1, 1)) {
-                playerWin = cell.disc.player;
-                highlightSequence(cell, 1, 1);
-            }
-
-
-
         }
 
         return playerWin;
 
     }
 
-    private bool checkWinnerSequence(Cell cell, int iRowIncr, int iColIncr) {
+    private bool checkWinnerSequence(Cell cell, int iRowIncr, int iColIncr, Player inPlayer) {
         bool hasWon;
         int i;
 
@@ -215,7 +214,7 @@ public class Board : MonoBehaviour {
                 hasWon = false;
             } else if (cellCheck.disc == null) {
                 hasWon = false;
-            } else if (cellCheck.disc.player != cell.disc.player) {
+            } else if (cellCheck.disc.player != inPlayer) {
                 hasWon = false;
             }
 
@@ -237,5 +236,80 @@ public class Board : MonoBehaviour {
         }
 
     }
+
+
+    public List<int> getColumnOutcomeWeights(Player p) {
+        List<int> listWeights = new List<int>();
+        int j;
+        int iBestScore;
+
+        Debug.Log("cols: " + getCols());
+        //check winning move
+        for (j = 0; j < getCols(); j++) {
+            int iColumnWeight = getColumnWeight(getDroppedCell(j), p);
+            listWeights.Add(iColumnWeight);
+
+        }
+
+        return listWeights;
+
+    }
+
+    private int getColumnWeight(Cell cell, Player p) {
+        int iWeight;
+        iWeight = 0;
+
+        //check for vertical win
+        if (cell != null) {
+            int i;
+            for (i = cell.iRow; i > cell.iRow - iConnectToWin; i--) {
+                if (i >= 0) {
+                    Cell cellCheck = getCell(i, cell.iCol);
+                    if (cellCheck == null) {
+                        break;
+                    } else if (cellCheck.disc != null && cellCheck.disc.player != p) {
+                        break;
+                    } else if (cellCheck.disc != null && cellCheck.disc.player == p) {
+                        iWeight++;
+
+                    }
+                }
+            }
+        }
+
+        //check for vertical loss on next player turn
+        if (cell != null) {
+            int i;
+            if (checkWinnerSequence(cell, 0, 1, gamemanager.getIdlePlayer()) ||
+                checkWinnerSequence(cell, 0, -1, gamemanager.getIdlePlayer()) ||
+                checkWinnerSequence(cell, 1, 0, gamemanager.getIdlePlayer()) ||
+                checkWinnerSequence(cell, -1, 0, gamemanager.getIdlePlayer()) ||
+                checkWinnerSequence(cell, 1, 1, gamemanager.getIdlePlayer()) ||
+                checkWinnerSequence(cell, -1, 1, gamemanager.getIdlePlayer()) ||
+                checkWinnerSequence(cell, 1, -1, gamemanager.getIdlePlayer()) ||
+                checkWinnerSequence(cell, -1, -1, gamemanager.getIdlePlayer())
+                ) {
+                iWeight = iConnectToWin;
+            }
+        }
+
+
+        return iWeight;
+    }
+
+
+    private int getDiscCount() {
+        int iCount;
+        iCount = 0;
+
+        foreach (Cell cell in cells) {
+            if (cell.disc != null) {
+                iCount++;
+            }
+        }
+
+        return iCount;
+    }
+
 
 }
