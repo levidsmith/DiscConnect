@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
 
@@ -16,11 +17,13 @@ public class GameManager : MonoBehaviour {
     public Material matDiscHighlight;
 
     public bool isGameOver;
+
+    public Music music;
     
 
     void Start() {
         setupGame();
-        
+
     }
 
     void Update() {
@@ -59,7 +62,9 @@ public class GameManager : MonoBehaviour {
 
         currentPlayer = players[0];
         isGameOver = false;
-        
+
+        music.StopAllAndPlay(music.MusicTheme);
+
     }
 
     public void nextPlayer() {
@@ -94,9 +99,13 @@ public class GameManager : MonoBehaviour {
                 if (playerWin != null) {
                     Debug.Log(playerWin.strName + " Wins!");
                     isGameOver = true;
+                    music.StopAllAndPlay(music.MusicFanfare);
+
+
                 } else if (isDraw) {
                     Debug.Log("Draw!");
                     isGameOver = true;
+                    music.StopAllAndPlay(music.MusicGameover);
 
                 } else { 
                 nextPlayer();
@@ -119,6 +128,10 @@ public class GameManager : MonoBehaviour {
 
     public Player getIdlePlayer() {
         return players[(players.IndexOf(currentPlayer) + 1) % 2];
+    }
+
+    public void doQuit() {
+        SceneManager.LoadScene("title");
     }
 
 

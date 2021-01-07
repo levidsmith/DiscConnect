@@ -18,8 +18,11 @@ public class OptionsMenu : MonoBehaviour {
     const int TO_WIN_MIN = 4;
     const int TO_WIN_MAX = 8;
 
+    public Music music;
+
     void Start() {
         updateDisplay();
+        music.StopAllAndPlay(music.MusicOptions);
 
     }
 
