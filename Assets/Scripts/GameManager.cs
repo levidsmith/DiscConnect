@@ -47,7 +47,9 @@ public class GameManager : MonoBehaviour {
         player.strName = "Player One";
         player.gamemanager = this;
         player.iPlayerIndex = 0;
-        player.isHumanControlled = true;
+        //        player.isHumanControlled = true;
+        player.isHumanControlled = Options.isHumanPlayerOne;
+        matDiscs[0].color = Options.colorPlayerOne;
         player.setupPlayer();
         players.Add(player);
 
@@ -56,7 +58,9 @@ public class GameManager : MonoBehaviour {
         player.strName = "Player Two";
         player.gamemanager = this;
         player.iPlayerIndex = 1;
-        player.isHumanControlled = false;
+//        player.isHumanControlled = false;
+        player.isHumanControlled = Options.isHumanPlayerTwo;
+        matDiscs[1].color = Options.colorPlayerTwo;
         player.setupPlayer();
         players.Add(player);
 

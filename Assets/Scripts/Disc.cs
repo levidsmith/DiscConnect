@@ -12,7 +12,7 @@ public class Disc : MonoBehaviour {
 
     public bool isHighlighted;
     float fHighlightCountdown;
-    float fMaxHighlightCountdown = 2f;
+    float fMaxHighlightCountdown = 1f;
     public GameManager gamemanager;
 
     void Start() {
@@ -31,7 +31,7 @@ public class Disc : MonoBehaviour {
                 fHighlightCountdown = fMaxHighlightCountdown;
             }
 
-            if (Mathf.FloorToInt(fHighlightCountdown) % 2 == 0) {
+            if (Mathf.FloorToInt(fHighlightCountdown * 2) % 2 == 0) {
                 model.GetComponent<Renderer>().material = gamemanager.matDiscHighlight;
             } else {
                 model.GetComponent<Renderer>().material = gamemanager.matDiscs[player.iPlayerIndex];

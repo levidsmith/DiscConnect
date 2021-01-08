@@ -11,6 +11,12 @@ public class OptionsMenu : MonoBehaviour {
     public Text TextColsValue;
     public Text TextToWinValue;
 
+    public Toggle ToggleIsHumanPlayerOne;
+    public Toggle ToggleIsHumanPlayerTwo;
+
+    public Dropdown DropdownColorPlayerOne;
+    public Dropdown DropdownColorPlayerTwo;
+
     const int ROWS_MIN = 4;
     const int ROWS_MAX = 7;
     const int COLS_MIN = 4;
@@ -90,9 +96,65 @@ public class OptionsMenu : MonoBehaviour {
 
     }
 
+    private void setColorOptions() {
+        switch (DropdownColorPlayerOne.value) {
+            case 0:
+                Options.colorPlayerOne = Color.red;
+                break;
+            case 1:
+                Options.colorPlayerOne = new Color(1f, 0.5f, 0f);
+                break;
+            case 2:
+                Options.colorPlayerOne = Color.yellow;
+                break;
+            case 3:
+                Options.colorPlayerOne = Color.green;
+                break;
+            case 4:
+                Options.colorPlayerOne = Color.cyan;
+                break;
+            case 5:
+                Options.colorPlayerOne = Color.blue;
+                break;
+            case 6:
+                Options.colorPlayerOne = new Color(0.5f, 0f, 1f);
+                break;
+        }
 
+        switch (DropdownColorPlayerTwo.value) {
+            case 0:
+                Options.colorPlayerTwo = Color.red;
+                break;
+            case 1:
+                Options.colorPlayerTwo = new Color(1f, 0.5f, 0f);
+                break;
+            case 2:
+                Options.colorPlayerTwo = Color.yellow;
+                break;
+            case 3:
+                Options.colorPlayerTwo = Color.green;
+                break;
+            case 4:
+                Options.colorPlayerTwo = Color.cyan;
+                break;
+            case 5:
+                Options.colorPlayerTwo = Color.blue;
+                break;
+            case 6:
+                Options.colorPlayerTwo = new Color(0.5f, 0f, 1f);
+                break;
+        }
+
+
+
+    }
 
     public void doStart() {
+        Options.isHumanPlayerOne = ToggleIsHumanPlayerOne.isOn;
+        Options.isHumanPlayerTwo = ToggleIsHumanPlayerTwo.isOn;
+
+        setColorOptions();
+
         SceneManager.LoadScene("game");
     }
 }

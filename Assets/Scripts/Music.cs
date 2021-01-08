@@ -30,6 +30,7 @@ public class Music : MonoBehaviour {
         MusicOptions.Stop();
         MusicTheme.Stop();
         MusicFanfare.Stop();
+        isPlayingFanfare = false;
         MusicGameover.Stop();
 
         audiosource.Play();
