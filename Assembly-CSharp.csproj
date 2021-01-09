@@ -62,11 +62,14 @@
     <Compile Include="Assets\Scripts\Player.cs" />
     <Compile Include="Assets\Scripts\LightEffect.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
+    <Compile Include="Assets\Scripts\Music.cs" />
     <Compile Include="Assets\Scripts\Cell.cs" />
     <Compile Include="Assets\Scripts\Board.cs" />
-    <Compile Include="Assets\Scripts\Options.cs" />
-    <Compile Include="Assets\Scripts\Music.cs" />
     <Compile Include="Assets\Scripts\TitleMenu.cs" />
+    <Compile Include="Assets\Scripts\Options.cs" />
+    <Compile Include="Assets\Scripts\LightSwitch.cs" />
+    <Compile Include="Assets\Scripts\SwitchDoorbell.cs" />
+    <Compile Include="Assets\Scripts\Painting.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

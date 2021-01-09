@@ -8,9 +8,9 @@ public static class Options{
     public static int COLS = 7;
     public static int TO_WIN = 4;
 
-    public static bool isHumanPlayerOne;
-    public static bool isHumanPlayerTwo;
+    public static bool isHumanPlayerOne = true;
+    public static bool isHumanPlayerTwo = false;
 
-    public static Color colorPlayerOne;
-    public static Color colorPlayerTwo;
+    public static Color colorPlayerOne = Color.yellow;
+    public static Color colorPlayerTwo = Color.red;
 }

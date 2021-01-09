@@ -244,7 +244,7 @@ public class Board : MonoBehaviour {
         int j;
         int iBestScore;
 
-        Debug.Log("cols: " + getCols());
+        //Debug.Log("cols: " + getCols());
         //check winning move
         for (j = 0; j < getCols(); j++) {
             int iColumnWeight = getColumnWeight(getDroppedCell(j), p);

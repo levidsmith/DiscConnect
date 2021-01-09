@@ -35,22 +35,42 @@ public class Player : MonoBehaviour {
 
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit raycasthit;
+        RaycastHit raycasthit;
 
-            Physics.Raycast(ray, out raycasthit);
-            if (raycasthit.collider != null) {
-                ColumnSelect columnselect = raycasthit.collider.GetComponent<ColumnSelect>();
-                if (columnselect != null) {
-                    if (Input.GetMouseButtonDown(0)) {
-                        gamemanager.playColumn(columnselect.iCol);
-                    } else {
-                        columnselect.setHovered(true, gamemanager.matDiscs[iPlayerIndex]);
-                    }
-
-
+        Physics.Raycast(ray, out raycasthit);
+        if (raycasthit.collider != null) {
+            ColumnSelect columnselect = raycasthit.collider.GetComponent<ColumnSelect>();
+            if (columnselect != null) {
+                if (Input.GetMouseButtonDown(0)) {
+                    gamemanager.playColumn(columnselect.iCol);
+                } else {
+                    columnselect.setHovered(true, gamemanager.matDiscs[iPlayerIndex]);
                 }
+
+
             }
-//        }
+
+            LightSwitch lightswitch = raycasthit.collider.GetComponent<LightSwitch>();
+            if (lightswitch != null && Input.GetMouseButtonDown(0)) {
+                Debug.Log("lightswitch clicked");
+                lightswitch.toggleLights();
+
+            }
+
+            SwitchDoorbell switchdoorbell = raycasthit.collider.GetComponent<SwitchDoorbell>();
+            if (switchdoorbell != null && Input.GetMouseButtonDown(0)) {
+                Debug.Log("doorbell pressed");
+                switchdoorbell.playDoorbell();
+
+            }
+
+            Painting painting = raycasthit.collider.GetComponent<Painting>();
+            if (painting != null && Input.GetMouseButtonDown(0)) {
+                painting.doChangePainting();
+            }
+
+
+        }
 
     }
 
@@ -70,7 +90,7 @@ public class Player : MonoBehaviour {
             }
             i++;
         }
-        Debug.Log("Weights: " + strWeights);
+        //Debug.Log("Weights: " + strWeights);
 
         List<int> listBestColumns = new List<int>();
 
@@ -85,7 +105,7 @@ public class Player : MonoBehaviour {
         foreach (int iValue in listBestColumns) {
             strColumns += iValue + ", ";
         }
-        Debug.Log("Best Columns: " + strColumns);
+        //Debug.Log("Best Columns: " + strColumns);
 
         int iPlayColumn = listBestColumns[Random.Range(0, listBestColumns.Count)];
         gamemanager.playColumn(iPlayColumn);

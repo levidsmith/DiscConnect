@@ -19,6 +19,12 @@ public class GameManager : MonoBehaviour {
     public bool isGameOver;
 
     public Music music;
+    public LightSwitch lightswitch;
+    public SwitchDoorbell switchdoorbell;
+    public Painting painting;
+
+    public AudioSource SoundDropDisc;
+
     
 
     void Start() {
@@ -96,6 +102,8 @@ public class GameManager : MonoBehaviour {
                 targetCell.disc.transform.position = new Vector3(iCol + board.getXOffset(), board.getRows() + board.getYOffset(), 0f);
                 currentPlayer.discs.RemoveAt(iDisc);
                 targetCell.disc.targetPosition = targetCell.transform.position;
+                
+                SoundDropDisc.Play();
 
                 //Player playerWin = board.checkWinner(targetCell);
                 Player playerWin = board.checkWinner();
